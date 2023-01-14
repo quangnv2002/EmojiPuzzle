@@ -27,13 +27,10 @@ public class AllPopupHandle : MonoBehaviour
         {
             GameObject obj = Instantiate(_popup.gameObject, canvas.transform);
         }
-        Debug.Log("Init");
-
     }
     
     private void Start()
     {
         Debug.Log(canvas.gameObject.name);
-
     }
 }

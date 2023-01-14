@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -58,7 +58,7 @@ public class revoGameController : MonoBehaviour
 
     public void LoadCurrentLevel()
     {
-        if (level != null) Destroy(level);
+        if (level != null) Destroy(level.gameObject);
         foreach (KeyValuePair<LineRenderer, bool> item in line_dic)
         {
             Destroy(item.Key.gameObject);
@@ -104,7 +104,7 @@ public class revoGameController : MonoBehaviour
     }
     public void LoadNextLevel()
     {
-        Destroy(level);
+        Destroy(level.gameObject);
         foreach (KeyValuePair<LineRenderer, bool> item in line_dic)
         {
             Destroy(item.Key.gameObject);
@@ -145,6 +145,7 @@ public class revoGameController : MonoBehaviour
         ads_btn.onClick.AddListener(() =>
         {
             AdsManager.Instance.RequestRewardAd();
+            GuideObjectController.Instance.DeActiveGuide(); //HỦY HƯỚNG DẪN
             UnityAction earnedReward = () =>
             {
                 Debug.Log("Bat dieu huong");
@@ -198,7 +199,7 @@ public class revoGameController : MonoBehaviour
                     }
                     line_dic.Remove(item_1.gameObject.GetComponent<PairLine>().GetPairLine_Line());
 
-                    Destroy(item_1.gameObject.GetComponent<PairLine>().GetPairLine_Line());
+                    Destroy(item_1.gameObject.GetComponent<PairLine>().GetPairLine_Line().gameObject);
                     // item 1 co duong thi open 1 & delete 2 cu
                     item_1.gameObject.GetComponent<PairLine>().GetObject2().gameObject.transform.GetChild(0).gameObject.SetActive(false);
                     item_1.gameObject.GetComponent<PairLine>().GetObject1().gameObject.transform.GetChild(0).gameObject.SetActive(false);
@@ -262,7 +263,7 @@ public class revoGameController : MonoBehaviour
                     }
 
                     line_dic.Remove(item_2.gameObject.GetComponent<PairLine>().GetPairLine_Line());
-                    Destroy(item_2.gameObject.GetComponent<PairLine>().GetPairLine_Line());
+                    Destroy(item_2.gameObject.GetComponent<PairLine>().GetPairLine_Line().gameObject);
                     item_2.gameObject.GetComponent<PairLine>().GetObject1().gameObject.transform.GetChild(0).gameObject.SetActive(false);
                     item_2.gameObject.GetComponent<PairLine>().GetObject2().gameObject.transform.GetChild(0).gameObject.SetActive(false);
                     item_2.gameObject.transform.GetChild(0).gameObject.SetActive(true);
@@ -339,8 +340,8 @@ public class revoGameController : MonoBehaviour
                     new_line.SetPosition(1, linePoint_2);
 
                     //13/1/23
-                    item_1.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, true);
-                    item_2.gameObject.GetComponent<PairLine>().SetPairLine(item_2.gameObject, item_1.gameObject, new_line, true);
+                    //item_1.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, true);
+                    //item_2.gameObject.GetComponent<PairLine>().SetPairLine(item_2.gameObject, item_1.gameObject, new_line, true);
                     //item_2.gameObject.GetComponent<PairLine>().PrintPairLine();
 
                     //connected_dic[item_1.itemSide == ItemSide.Left ? item_1.gameObject : item_2.gameObject] = true;
@@ -356,16 +357,16 @@ public class revoGameController : MonoBehaviour
                     if (item_1.itemId == item_2.itemId)
                     {
                         score++;
-                        //item_1.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, true);
-                        //item_2.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, true);
+                        item_1.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, true);
+                        item_2.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, true);
                         //item_2.gameObject.GetComponent<PairLine>().PrintPairLine();
                         line_dic.Add(new_line, true);
                     }
                     else
                     {
                         line_dic.Add(new_line, false);
-                        //item_1.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, false);
-                        //item_2.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, false);
+                        item_1.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, false);
+                        item_2.gameObject.GetComponent<PairLine>().SetPairLine(item_1.gameObject, item_2.gameObject, new_line, false);
                         //item_2.gameObject.GetComponent<PairLine>().PrintPairLine();
                     }
                 }
